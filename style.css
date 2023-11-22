@@ -1,0 +1,44 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* max-width: 640px; */
+}
+
+#settings {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 16px;
+    gap: 8px;
+}
+
+#settings > input {
+    max-width: 32px;
+}
+
+.box {
+    height: 32px;
+    width: 32px;
+    box-sizing: border-box;
+    border: 1px red solid;
+}
+
+
+/* Preset box shades incrementing 10% per */
+.box-shade-0  { background-color: rgb(255, 255, 255); }
+.box-shade-10 { background-color: rgb(229.5, 229.5, 229.5); }
+.box-shade-20 { background-color: rgb(204, 204, 204); }
+.box-shade-30 { background-color: rgb(178.5, 178.5, 178.5); }
+.box-shade-40 { background-color: rgb(153, 153, 153); }
+.box-shade-50 { background-color: rgb(127.5, 127.5, 127.5); }
+.box-shade-60 { background-color: rgb(102, 102, 102); }
+.box-shade-70 { background-color: rgb(76.5, 76.5, 76.5); }
+.box-shade-80 { background-color: rgb(51, 51 ,51); }
+.box-shade-90 { background-color: rgb(25.5, 25.5, 25.5); }
+.box-shade-100 { background-color: rgb(0, 0, 0); }
