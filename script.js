@@ -1,11 +1,11 @@
-function createDrawingPad(column, row) {
+function createDrawingPad(xAxis, yAxis) {
     let container = document.querySelector("#container");
-    
-    for(let i = 1; i <= column; i++) {
+    removeAllChildNodes(container);
+    for(let i = 1; i <= xAxis; i++) {
         let columnContainer = document.createElement("div");
         columnContainer.className = "column"
         columnContainer.id = `column${i}`;
-        for (let j = 1; j <= row; j++) {
+        for (let j = 1; j <= yAxis; j++) {
             let box = document.createElement("div");
             box.id = `column${i}:row${j}`;
             box.className = "box box-shade-0";
@@ -54,5 +54,23 @@ function addBoxEvents(box) {
         
     });
 }
+
+function createNewDrawingPad() {
+    let xAxis = document.querySelector("#x-axis").value;
+    let yAxis = document.querySelector("#y-axis").value;
+    createDrawingPad(xAxis, yAxis)
+}
+
+// via: https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+// do stuff
+let setGridSizeButton = document.querySelector("#setGridSizeButton");
+setGridSizeButton.addEventListener("click", createNewDrawingPad);
+
 
 createDrawingPad(16, 16);

@@ -8,7 +8,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* max-width: 640px; */
 }
 
 #settings {
@@ -25,6 +24,10 @@ body {
 .box {
     height: 32px;
     width: 32px;
+}
+
+/* for debugging */
+.box {
     box-sizing: border-box;
     border: 1px red solid;
 }
