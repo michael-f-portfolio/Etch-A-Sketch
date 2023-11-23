@@ -39,31 +39,9 @@ body {
 
 .box {
     padding: 8px;
+    background-color: #ffffff;
 }
 
 .column {
     box-sizing: border-box;
 }
-
-/* debug */
-.box {
-    box-sizing: border-box;
-}
-
-#container {
-    /* box-sizing: border-box; */
-    /* border: 1px blue solid; */
-}
-
-/* Preset box shades incrementing 10% per */
-.box-shade-0  { background-color: #ffffff; }
-.box-shade-10 { background-color: #e6e6e6; }
-.box-shade-20 { background-color: #cccccc; }
-.box-shade-30 { background-color: #b3b3b3; }
-.box-shade-40 { background-color: #999999; }
-.box-shade-50 { background-color: #808080; }
-.box-shade-60 { background-color: #666666; }
-.box-shade-70 { background-color: #4d4d4d; }
-.box-shade-80 { background-color: #333333; }
-.box-shade-90 { background-color: #1a1a1a; }
-.box-shade-100 { background-color: #000000; }

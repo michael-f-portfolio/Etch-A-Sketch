@@ -25,7 +25,8 @@ function createDrawingPad(xAxis, yAxis) {
         for (let j = 1; j <= yAxis; j++) {
             let box = document.createElement("div");
             box.id = `column${i}:row${j}`;
-            box.className = "box box-shade-0";
+            box.className = "box";
+            box.style.backgroundColor = DEFAULT_COLOR;
             addBoxEvents(box);
             columnContainer.appendChild(box);
         }
@@ -48,33 +49,30 @@ function createNewDrawingPad() {
     }
 }
 
-function incrementBackgroundColor(classList) {
-    let boxClassList = classList;
-    if (boxClassList.contains("box-shade-0")) {
-         boxClassList.replace("box-shade-0", "box-shade-10");
-    } else if (boxClassList.contains("box-shade-10")) {
-         boxClassList.replace("box-shade-10", "box-shade-20");
-    } else if (boxClassList.contains("box-shade-20")) {
-         boxClassList.replace("box-shade-20", "box-shade-30");
-    } else if (boxClassList.contains("box-shade-30")) {
-         boxClassList.replace("box-shade-30", "box-shade-40");
-    } else if (boxClassList.contains("box-shade-40")) {
-         boxClassList.replace("box-shade-40", "box-shade-50");
-    } else if (boxClassList.contains("box-shade-50")) {
-         boxClassList.replace("box-shade-50", "box-shade-60");
-    } else if (boxClassList.contains("box-shade-60")) {
-         boxClassList.replace("box-shade-60", "box-shade-70");
-    } else if (boxClassList.contains("box-shade-70")) {
-         boxClassList.replace("box-shade-70", "box-shade-80");
-    } else if (boxClassList.contains("box-shade-80")) {
-         boxClassList.replace("box-shade-80", "box-shade-90");
-    } else if (boxClassList.contains("box-shade-90")) {
-         boxClassList.replace("box-shade-90", "box-shade-100");
-    } else if (boxClassList.contains("box-shade-100")) {
-         // do nothing 
+function incrementBackgroundColor(boxStyles) {
+    if (boxStyles.backgroundColor === "rgb(255, 255, 255)") {
+        boxStyles.backgroundColor = "rgb(230, 230, 230)";
+    } else if (boxStyles.backgroundColor === "rgb(230, 230, 230)") {
+        boxStyles.backgroundColor = "rgb(204, 204, 204)";
+    } else if (boxStyles.backgroundColor === "rgb(204, 204, 204)") {
+        boxStyles.backgroundColor = "rgb(179, 179, 179)";
+    } else if (boxStyles.backgroundColor === "rgb(179, 179, 179)") {
+        boxStyles.backgroundColor = "rgb(153, 153, 153)";
+    } else if (boxStyles.backgroundColor === "rgb(153, 153, 153)") {
+        boxStyles.backgroundColor = "rgb(128, 128, 128)";
+    } else if (boxStyles.backgroundColor === "rgb(128, 128, 128)") {
+        boxStyles.backgroundColor = "rgb(102, 102, 102)";
+    } else if (boxStyles.backgroundColor === "rgb(102, 102, 102)") {
+        boxStyles.backgroundColor = "rgb(77, 77, 77)";
+    } else if (boxStyles.backgroundColor === "rgb(77, 77, 77)") {
+        boxStyles.backgroundColor = "rgb(51, 51, 51)";
+    } else if (boxStyles.backgroundColor === "rgb(51, 51, 51)") {
+        boxStyles.backgroundColor = "rgb(26, 26, 26)";
+    } else if (boxStyles.backgroundColor === "rgb(26, 26, 26)") {
+        boxStyles.backgroundColor = "rgb(0, 0, 0)";
     }
-    return boxClassList;
- }
+    return boxStyles;
+}
 
 function toggleGridLines() {
     let gridContainer = document.querySelector("#container");
@@ -100,7 +98,6 @@ function toggleGridLines() {
                 else if (box.parentElement.id === `column${gridSize}`) {
                     // draw shadow on left, top and right
                     box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, -1px 0 #000 inset";
-
                 }
             });
             columnPosition++;
@@ -117,19 +114,49 @@ function toggleGridLines() {
     }
 }
 
-function draw(classList) {
-    if(isColorMode) {
+function changePenStyle() {
+    if(this.id === "shader") {
+        console.log(this.id);
+        isShaderMode = true;
+        isRainbowMode = false;
+        isColorMode = false;
+        isEraserMode = false;
+    } else if (this.id === "rainbow") {
+        console.log(this.id);
+        isShaderMode = false;
+        isRainbowMode = true;
+        isColorMode = false;
+        isEraserMode = false;
+    } else if (this.id === "color") {
+        console.log(this.id);
+        isShaderMode = false;
+        isRainbowMode = false;
+        isColorMode = true;
+        isEraserMode = false;
+    } else if (this.id === "eraser") {
+        console.log(this.id);
+        isShaderMode = false;
+        isRainbowMode = false;
+        isColorMode = false;
+        isEraserMode = true;
+    }
+}
 
+function draw(boxStyles) {
+    let color = boxStyles;
+    if (isShaderMode) {
+        color = incrementBackgroundColor(boxStyles);
     }
     if (isRainbowMode) {
 
     }
-    if (isShaderMode) {
-        return incrementBackgroundColor(classList);
-    }
-    if (isEraserMode) {
+    if(isColorMode) {
 
     }
+    if (isEraserMode) {
+        color = DEFAULT_COLOR;
+    }
+    return color;
 }
 
 //// Validation
@@ -151,6 +178,11 @@ setGridSizeButton.addEventListener("click", createNewDrawingPad);
 let toggleGridLinesButton = document.querySelector("#toggleGridLinesButton");
 toggleGridLinesButton.addEventListener("click", toggleGridLines)
 
+let changePenStyleRadioGroup = document.querySelectorAll("input[name='pen-style']");
+changePenStyleRadioGroup.forEach(penStyle => {
+    penStyle.addEventListener("change", changePenStyle);
+});
+
 // Mirror x-axis input onto y-axis
 let xAxisInput = document.querySelector("#x-axis-input");
 xAxisInput.addEventListener("input", function(e) {
@@ -162,11 +194,11 @@ xAxisInput.addEventListener("input", function(e) {
 function addBoxEvents(box) {
     box.addEventListener("mousedown", function(e) {
         onMouseDown = true;
-        box.className = draw(e.target.classList);
+        box.style.backgroundColor = draw(box.style);
     });
     box.addEventListener("mouseenter", function(e) {
         if(onMouseDown) {
-            box.className = draw(e.target.classList);
+            box.style.backgroundColor = draw(box.style);
         }
     });
     box.addEventListener("mouseup", function(e) {
@@ -183,4 +215,9 @@ function removeAllChildNodes(parent) {
 }
 
 // init
-createDrawingPad(DEFAULT_GRID_SIZE, DEFAULT_GRID_SIZE);
+
+function initialize() {
+    createDrawingPad(DEFAULT_GRID_SIZE, DEFAULT_GRID_SIZE);
+}
+
+initialize();
