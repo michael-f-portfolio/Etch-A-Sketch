@@ -77,32 +77,41 @@ function incrementBackgroundColor(classList) {
  }
 
 function toggleGridLines() {
-    let gridContainerArray = [...document.querySelector("#container").children];
+    let gridContainer = document.querySelector("#container");
+    let gridContainerArray = [...gridContainer.children];
+    let columnPosition = 1;
     if(!showGrid) {
         gridContainerArray.forEach(column => {
             let columnArray = [...column.children];
             columnArray.forEach(box => {
-                box.style.borderTop = "1px solid black";
-                box.style.borderLeft = "1px solid black";
+                // draw shadow on left and top
+                box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset";
+                // is last box of last column
+                if (box.id === `column${gridSize}:row${gridSize}`) {
+                    // draw shadow on left, top, right and bottom
+                    box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, 0 -1px #000 inset, -1px 0 #000 inset";
+                } 
+                // is last box of all columns
+                else if (box.id === `column${columnPosition}:row${gridSize}`) { 
+                    // draw shadow on left, top and bottom
+                    box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, 0 -1px #000 inset";
+                }  
+                // is last column
+                else if (box.parentElement.id === `column${gridSize}`) {
+                    // draw shadow on left, top and right
+                    box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, -1px 0 #000 inset";
+
+                }
             });
-            column.style.borderBottom = "1px solid black"
-            // If column is the last (furthest to the right) add a border on its right
-            if (column.id === `column${gridSize}`) {
-                column.style.borderRight = "1px solid black";
-            }
+            columnPosition++;
         });
         showGrid = true;
     } else {
         gridContainerArray.forEach(column => {
             let columnArray = [...column.children];
             columnArray.forEach(box => {
-                box.style.borderTop = "";
-                box.style.borderLeft = "";
+                box.style.boxShadow = "";
             });
-            column.style.borderBottom = ""
-            if (column.id === `column${gridSize}`) {
-                column.style.borderRight = "";
-            }
         });
         showGrid = false;
     }
@@ -174,4 +183,4 @@ function removeAllChildNodes(parent) {
 }
 
 // init
-createDrawingPad(16, 16);
+createDrawingPad(DEFAULT_GRID_SIZE, DEFAULT_GRID_SIZE);
