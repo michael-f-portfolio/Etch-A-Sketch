@@ -1,3 +1,5 @@
+const DEFAULT_COLOR = "#ffffff";
+
 // init
 createDrawingPad(16, 16);
 
@@ -29,8 +31,8 @@ function createDrawingPad(xAxis, yAxis) {
 }
 
 function createNewDrawingPad() {
-    let xAxis = document.querySelector("#x-axis");
-    let yAxis = document.querySelector("#y-axis");
+    let xAxis = document.querySelector("#x-axis-input");
+    let yAxis = document.querySelector("#y-axis-input");
 
     if (isValidGridSize(xAxis.value, yAxis.value)) {
         document.querySelector("#warning-message").innerHTML = "";
@@ -102,10 +104,10 @@ let setGridSizeButton = document.querySelector("#setGridSizeButton");
 setGridSizeButton.addEventListener("click", createNewDrawingPad);
 
 // Mirror x-axis input onto y-axis
-let xAxisInput = document.querySelector("#x-axis");
+let xAxisInput = document.querySelector("#x-axis-input");
 xAxisInput.addEventListener("input", function(e) {
     let xAxisInputValue = e.target.value;
-    let yAxisInput = document.querySelector("#y-axis");
+    let yAxisInput = document.querySelector("#y-axis-input");
     yAxisInput.value = xAxisInputValue;
 })
 

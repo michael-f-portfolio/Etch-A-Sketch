@@ -10,13 +10,25 @@
 <body>
     <h1>Etch A Sketch</h1>
     <div id="settings">
-        <label for="x-axis">Set Grid Size:</label>
-        <input value="16" type="text" id="x-axis">
-        x
-        <input disabled type="text" id="y-axis">
-        <button id="setGridSizeButton">Submit</button>
+        <div id="create-grid">
+            <label for="x-axis-input">Set Grid Size:</label>
+            <input value="16" type="text" id="x-axis-input">
+            x
+            <input disabled type="text" id="y-axis-input">
+            <button id="setGridSizeButton">Submit</button>
+        </div>
+        <div id="warning-message"></div>
+        <div id="pen-style">
+            <label for="shader">Shader</label>
+            <input type="radio" id="shader" value="shader" name="pen-style" checked>
+            <label for="rainbow">Rainbow</label>
+            <input type="radio" id="rainbow" value="rainbow" name="pen-style">
+            <label for="color">Color</label>
+            <input type="radio" id="color" value="color" name="pen-style">
+            <label for="eraser">Eraser</label>
+            <input type="radio" id="eraser" value="eraser" name="pen-style">
+        </div>
     </div>
-    <div id="warning-message"></div>
     <div id="container"></div>
 </body>
 </html>
