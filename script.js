@@ -49,7 +49,7 @@ function createNewDrawingPad() {
     }
 }
 
-function incrementBackgroundColor(boxStyles) {
+function shader(boxStyles) {
     if (boxStyles.backgroundColor === "rgb(255, 255, 255)") {
         boxStyles.backgroundColor = "rgb(230, 230, 230)";
     } else if (boxStyles.backgroundColor === "rgb(230, 230, 230)") {
@@ -70,7 +70,17 @@ function incrementBackgroundColor(boxStyles) {
         boxStyles.backgroundColor = "rgb(26, 26, 26)";
     } else if (boxStyles.backgroundColor === "rgb(26, 26, 26)") {
         boxStyles.backgroundColor = "rgb(0, 0, 0)";
+    } else {
+        boxStyles.backgroundColor = "rgb(230, 230, 230)";
     }
+    return boxStyles;
+}
+
+function rainbow(boxStyles) {
+    let red = randomIntFromInterval(0, 255);
+    let green = randomIntFromInterval(0, 255);
+    let blue = randomIntFromInterval(0, 255);
+    boxStyles.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
     return boxStyles;
 }
 
@@ -116,25 +126,21 @@ function toggleGridLines() {
 
 function changePenStyle() {
     if(this.id === "shader") {
-        console.log(this.id);
         isShaderMode = true;
         isRainbowMode = false;
         isColorMode = false;
         isEraserMode = false;
     } else if (this.id === "rainbow") {
-        console.log(this.id);
         isShaderMode = false;
         isRainbowMode = true;
         isColorMode = false;
         isEraserMode = false;
     } else if (this.id === "color") {
-        console.log(this.id);
         isShaderMode = false;
         isRainbowMode = false;
         isColorMode = true;
         isEraserMode = false;
     } else if (this.id === "eraser") {
-        console.log(this.id);
         isShaderMode = false;
         isRainbowMode = false;
         isColorMode = false;
@@ -145,10 +151,10 @@ function changePenStyle() {
 function draw(boxStyles) {
     let color = boxStyles;
     if (isShaderMode) {
-        color = incrementBackgroundColor(boxStyles);
+        color = shader(boxStyles);
     }
     if (isRainbowMode) {
-
+        color = rainbow(boxStyles);
     }
     if(isColorMode) {
 
@@ -212,6 +218,10 @@ function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+}
+// via: https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 // init
