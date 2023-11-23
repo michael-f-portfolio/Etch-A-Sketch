@@ -70,9 +70,8 @@ function shader(boxStyles) {
         boxStyles.backgroundColor = "rgb(26, 26, 26)";
     } else if (boxStyles.backgroundColor === "rgb(26, 26, 26)") {
         boxStyles.backgroundColor = "rgb(0, 0, 0)";
-    } else {
-        boxStyles.backgroundColor = "rgb(230, 230, 230)";
-    }
+    } 
+    
     return boxStyles;
 }
 
