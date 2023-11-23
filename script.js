@@ -1,14 +1,17 @@
 const DEFAULT_COLOR = "#ffffff";
-
-// init
-createDrawingPad(16, 16);
+const DEFAULT_GRID_SIZE = 16;
 
 let onMouseDown = false;
+let gridSize = DEFAULT_GRID_SIZE;
 
+//// Toggles
+// Pen Styles
 let isShaderMode = true;
 let isRainbowMode = false;
 let isColorMode = false;
 let isEraserMode = false;
+// Other
+let showGrid = false;
 
 ////// Functions
 function createDrawingPad(xAxis, yAxis) {
@@ -28,6 +31,7 @@ function createDrawingPad(xAxis, yAxis) {
         }
         container.appendChild(columnContainer);
     }
+    gridSize = xAxis;
 }
 
 function createNewDrawingPad() {
@@ -72,6 +76,38 @@ function incrementBackgroundColor(classList) {
     return boxClassList;
  }
 
+function toggleGridLines() {
+    let gridContainerArray = [...document.querySelector("#container").children];
+    if(!showGrid) {
+        gridContainerArray.forEach(column => {
+            let columnArray = [...column.children];
+            columnArray.forEach(box => {
+                box.style.borderTop = "1px solid black";
+                box.style.borderLeft = "1px solid black";
+            });
+            column.style.borderBottom = "1px solid black"
+            // If column is the last (furthest to the right) add a border on its right
+            if (column.id === `column${gridSize}`) {
+                column.style.borderRight = "1px solid black";
+            }
+        });
+        showGrid = true;
+    } else {
+        gridContainerArray.forEach(column => {
+            let columnArray = [...column.children];
+            columnArray.forEach(box => {
+                box.style.borderTop = "";
+                box.style.borderLeft = "";
+            });
+            column.style.borderBottom = ""
+            if (column.id === `column${gridSize}`) {
+                column.style.borderRight = "";
+            }
+        });
+        showGrid = false;
+    }
+}
+
 function draw(classList) {
     if(isColorMode) {
 
@@ -102,6 +138,9 @@ function isValidGridSize(xAxis, yAxis) {
 //// Events
 let setGridSizeButton = document.querySelector("#setGridSizeButton");
 setGridSizeButton.addEventListener("click", createNewDrawingPad);
+
+let toggleGridLinesButton = document.querySelector("#toggleGridLinesButton");
+toggleGridLinesButton.addEventListener("click", toggleGridLines)
 
 // Mirror x-axis input onto y-axis
 let xAxisInput = document.querySelector("#x-axis-input");
@@ -134,3 +173,5 @@ function removeAllChildNodes(parent) {
     }
 }
 
+// init
+createDrawingPad(16, 16);

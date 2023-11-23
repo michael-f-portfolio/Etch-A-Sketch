@@ -12,7 +12,7 @@ body {
     box-sizing: border-box;
     background-color: #c22929;
     border-radius: 10px;
-    padding: 8px;
+    /* padding: 8px; */
 }
 
 #settings {
@@ -42,19 +42,25 @@ body {
 
 .box {
     padding: 8px;
+    /* border-top: 1px solid black; */
+    /* border-left: 1px solid black; */
 }
 
-/* for debugging */
+.column {
+    box-sizing: border-box;
+    /* border-bottom: 1px solid black; */
+}
+
+/* debug */
 .box {
-    /* box-sizing: border-box; */
-    /* border: 1px red solid; */
+    box-sizing: border-box;
+    /* border: 1px black solid; */
 }
 
 #container {
     /* box-sizing: border-box; */
     /* border: 1px blue solid; */
 }
-
 
 /* Preset box shades incrementing 10% per */
 .box-shade-0  { background-color: #ffffff; }

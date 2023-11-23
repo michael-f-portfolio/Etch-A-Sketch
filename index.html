@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Etch-A-Sketch</title>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Etch A Sketch</h1>
+    <div id="title">Etch A Sketch</div>
     <div id="settings">
         <div id="create-grid">
             <label for="x-axis-input">Set Grid Size:</label>
             <input value="16" type="text" id="x-axis-input">
             x
             <input disabled type="text" id="y-axis-input">
-            <button id="setGridSizeButton">Submit</button>
+            <button id="setGridSizeButton">Generate</button>
         </div>
         <div id="warning-message"></div>
         <div id="pen-style">
@@ -27,6 +27,9 @@
             <input type="radio" id="color" value="color" name="pen-style">
             <label for="eraser">Eraser</label>
             <input type="radio" id="eraser" value="eraser" name="pen-style">
+        </div>
+        <div id="gridToggles">
+            <button id="toggleGridLinesButton">Toggle Grid Lines</button>
         </div>
     </div>
     <div id="container"></div>
