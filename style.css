@@ -10,6 +10,9 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    width: 256px;
+    height: 256px;
+
 }
 
 #settings {
@@ -38,7 +41,6 @@ body {
 }
 
 .box {
-    padding: 8px;
     background-color: #ffffff;
 }
 

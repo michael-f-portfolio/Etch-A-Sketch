@@ -1,9 +1,14 @@
-const DEFAULT_COLOR = "#ffffff";
+const DEFAULT_CANVAS_COLOR = "#ffffff";
 const DEFAULT_GRID_SIZE = 16;
+const DEFAULT_CANVAS_SIZE = 256;
+const MIN_GRID_SIZE = 0;
+const MAX_GRID_SIZE = 64;
 
 let onMouseDown = false;
-let gridSize = DEFAULT_GRID_SIZE;
 
+let gridSize = DEFAULT_GRID_SIZE;
+let canvasColor = DEFAULT_CANVAS_COLOR;
+let canvasArea = DEFAULT_CANVAS_SIZE;
 //// Toggles
 // Pen Styles
 let isShaderMode = true;
@@ -11,12 +16,14 @@ let isRainbowMode = false;
 let isColorMode = false;
 let isEraserMode = false;
 // Other
-let showGrid = false;
+let showGridLines = false;
 
 ////// Functions
-function createDrawingPad(xAxis, yAxis) {
+function createGrid(xAxis, yAxis) {
     let container = document.querySelector("#container");
     removeAllChildNodes(container);
+    let boxHeight =  canvasArea / xAxis;
+    let boxWidth = canvasArea / yAxis;
     for(let i = 1; i <= xAxis; i++) {
         let columnContainer = document.createElement("div");
         columnContainer.className = "column"
@@ -26,7 +33,9 @@ function createDrawingPad(xAxis, yAxis) {
             let box = document.createElement("div");
             box.id = `column${i}:row${j}`;
             box.className = "box";
-            box.style.backgroundColor = DEFAULT_COLOR;
+            box.style.height = `${boxHeight}px`;
+            box.style.width = `${boxWidth}px`;
+            box.style.backgroundColor = DEFAULT_CANVAS_COLOR;
             addBoxEvents(box);
             columnContainer.appendChild(box);
         }
@@ -35,18 +44,70 @@ function createDrawingPad(xAxis, yAxis) {
     gridSize = xAxis;
 }
 
-function createNewDrawingPad() {
+function createNewGrid() {
     let xAxis = document.querySelector("#x-axis-input");
     let yAxis = document.querySelector("#y-axis-input");
 
     if (isValidGridSize(xAxis.value, yAxis.value)) {
         document.querySelector("#warning-message").innerHTML = "";
-        createDrawingPad(xAxis.value, yAxis.value);
+        createGrid(xAxis.value, yAxis.value);
     } else {
         xAxis.value = "";
         yAxis.value = "";
         document.querySelector("#warning-message").innerHTML = "Invalid Grid Size"
     }
+    if (showGridLines) {
+        drawGridLines();
+    }
+}
+
+function toggleGridLines() {
+    showGridLines = !showGridLines;
+    if (showGridLines) {
+        drawGridLines();
+    } else {
+        eraseGridLines();
+    }
+}
+
+function drawGridLines() {
+    let gridContainer = document.querySelector("#container");
+    let gridContainerArray = [...gridContainer.children];
+    let columnPosition = 1;
+    gridContainerArray.forEach(column => {
+        let columnArray = [...column.children];
+        columnArray.forEach(box => {
+            // draw shadow on left and top
+            box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset";
+            // is last box of last column
+            if (box.id === `column${gridSize}:row${gridSize}`) {
+                // draw shadow on left, top, right and bottom
+                box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, 0 -1px #000 inset, -1px 0 #000 inset";
+            } 
+            // is last box of all columns
+            else if (box.id === `column${columnPosition}:row${gridSize}`) { 
+                // draw shadow on left, top and bottom
+                box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, 0 -1px #000 inset";
+            }  
+            // is last column
+            else if (box.parentElement.id === `column${gridSize}`) {
+                // draw shadow on left, top and right
+                box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, -1px 0 #000 inset";
+            }
+        });
+        columnPosition++;
+    });
+}
+
+function eraseGridLines() {
+    let gridContainer = document.querySelector("#container");
+    let gridContainerArray = [...gridContainer.children];
+    gridContainerArray.forEach(column => {
+        let columnArray = [...column.children];
+        columnArray.forEach(box => {
+            box.style.boxShadow = "";
+        });
+    });
 }
 
 function shader(boxStyles) {
@@ -71,7 +132,7 @@ function shader(boxStyles) {
     } else if (boxStyles.backgroundColor === "rgb(26, 26, 26)") {
         boxStyles.backgroundColor = "rgb(0, 0, 0)";
     } 
-    
+
     return boxStyles;
 }
 
@@ -81,46 +142,6 @@ function rainbow(boxStyles) {
     let blue = randomIntFromInterval(0, 255);
     boxStyles.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
     return boxStyles;
-}
-
-function toggleGridLines() {
-    let gridContainer = document.querySelector("#container");
-    let gridContainerArray = [...gridContainer.children];
-    let columnPosition = 1;
-    if(!showGrid) {
-        gridContainerArray.forEach(column => {
-            let columnArray = [...column.children];
-            columnArray.forEach(box => {
-                // draw shadow on left and top
-                box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset";
-                // is last box of last column
-                if (box.id === `column${gridSize}:row${gridSize}`) {
-                    // draw shadow on left, top, right and bottom
-                    box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, 0 -1px #000 inset, -1px 0 #000 inset";
-                } 
-                // is last box of all columns
-                else if (box.id === `column${columnPosition}:row${gridSize}`) { 
-                    // draw shadow on left, top and bottom
-                    box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, 0 -1px #000 inset";
-                }  
-                // is last column
-                else if (box.parentElement.id === `column${gridSize}`) {
-                    // draw shadow on left, top and right
-                    box.style.boxShadow = "0 1px 0 #000 inset, 1px 0 0 #000 inset, -1px 0 #000 inset";
-                }
-            });
-            columnPosition++;
-        });
-        showGrid = true;
-    } else {
-        gridContainerArray.forEach(column => {
-            let columnArray = [...column.children];
-            columnArray.forEach(box => {
-                box.style.boxShadow = "";
-            });
-        });
-        showGrid = false;
-    }
 }
 
 function changePenStyle() {
@@ -159,7 +180,7 @@ function draw(boxStyles) {
 
     }
     if (isEraserMode) {
-        color = DEFAULT_COLOR;
+        color = canvasColor;
     }
     return color;
 }
@@ -167,18 +188,21 @@ function draw(boxStyles) {
 //// Validation
 function isValidGridSize(xAxis, yAxis) {
     // Is a number
-    if (isNaN(xAxis) && isNaN(yAxis)) return false;
+    if (isNaN(xAxis) && isNaN(yAxis)) 
+        return false;
     // Number must be greater than 0
-    if (xAxis <= 0 || yAxis <= 0) return false;
+    if (xAxis <= MIN_GRID_SIZE || yAxis <= MIN_GRID_SIZE) 
+        return false;
     // Number must be less than or equal to 100
-    if (xAxis > 100 || yAxis > 100) return false;
+    if (xAxis > MAX_GRID_SIZE || yAxis > MAX_GRID_SIZE) 
+        return false;
 
     return true;
 }
 
 //// Events
 let setGridSizeButton = document.querySelector("#setGridSizeButton");
-setGridSizeButton.addEventListener("click", createNewDrawingPad);
+setGridSizeButton.addEventListener("click", createNewGrid);
 
 let toggleGridLinesButton = document.querySelector("#toggleGridLinesButton");
 toggleGridLinesButton.addEventListener("click", toggleGridLines)
@@ -226,7 +250,12 @@ function randomIntFromInterval(min, max) { // min and max included
 // init
 
 function initialize() {
-    createDrawingPad(DEFAULT_GRID_SIZE, DEFAULT_GRID_SIZE);
+    createGrid(DEFAULT_GRID_SIZE, DEFAULT_GRID_SIZE);
 }
 
 initialize();
+
+//// todo:
+// Allow change of canvas default background
+// Color picker pen style
+// make page more presentable/stylish
