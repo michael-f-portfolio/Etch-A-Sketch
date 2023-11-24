@@ -3,7 +3,7 @@ const DEFAULT_CANVAS_SIZE = 512;
 const MIN_CANVAS_SIZE = 64;
 const MAX_CANVAS_SIZE = 1024;
 const DEFAULT_GRID_SIZE = 16;
-const MIN_GRID_SIZE = 0;
+const MIN_GRID_SIZE = 1;
 const MAX_GRID_SIZE = 64;
 
 let gridSize = DEFAULT_GRID_SIZE;
@@ -55,9 +55,12 @@ function createNewGrid() {
         document.querySelector("#warning-message").innerHTML = "";
         createGrid(xAxis.value, yAxis.value);
     } else {
+        document.querySelector("#warning-message").innerHTML 
+            = `Invalid Grid Size - Must be between ${MIN_GRID_SIZE} and ${MAX_GRID_SIZE} (inclusive)
+            but was: ${xAxis.value}`;
         xAxis.value = "";
         yAxis.value = "";
-        document.querySelector("#warning-message").innerHTML = "Invalid Grid Size"
+        
     }
     if (showGridLines) {
         drawGridLines();
@@ -208,7 +211,7 @@ function isValidGridSize(xAxis, yAxis) {
     if (isNaN(xAxis) && isNaN(yAxis)) 
         return false;
     // Number must be greater than 0
-    if (xAxis <= MIN_GRID_SIZE || yAxis <= MIN_GRID_SIZE) 
+    if (xAxis < MIN_GRID_SIZE || yAxis < MIN_GRID_SIZE) 
         return false;
     // Number must be less than or equal to 100
     if (xAxis > MAX_GRID_SIZE || yAxis > MAX_GRID_SIZE) 
