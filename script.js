@@ -1,14 +1,12 @@
 const DEFAULT_CANVAS_COLOR = "#ffffff";
 const DEFAULT_GRID_SIZE = 16;
-const DEFAULT_CANVAS_SIZE = 256;
+const DEFAULT_CANVAS_SIZE = 512;
 const MIN_GRID_SIZE = 0;
 const MAX_GRID_SIZE = 64;
 
-let onMouseDown = false;
-
 let gridSize = DEFAULT_GRID_SIZE;
 let canvasColor = DEFAULT_CANVAS_COLOR;
-let canvasArea = DEFAULT_CANVAS_SIZE;
+let canvasLength = DEFAULT_CANVAS_SIZE;
 //// Toggles
 // Pen Styles
 let isShaderMode = true;
@@ -17,13 +15,16 @@ let isColorMode = false;
 let isEraserMode = false;
 // Other
 let showGridLines = false;
+let onMouseDown = false;
 
 ////// Functions
 function createGrid(xAxis, yAxis) {
-    let container = document.querySelector("#container");
-    removeAllChildNodes(container);
-    let boxHeight =  canvasArea / xAxis;
-    let boxWidth = canvasArea / yAxis;
+    let canvas = document.querySelector("#canvas");
+    canvas.style.height = `${canvasLength}px`;
+    canvas.style.width = `${canvasLength}px`
+    removeAllChildNodes(canvas);
+    let boxHeight =  canvasLength / xAxis;
+    let boxWidth = canvasLength / yAxis;
     for(let i = 1; i <= xAxis; i++) {
         let columnContainer = document.createElement("div");
         columnContainer.className = "column"
@@ -39,7 +40,7 @@ function createGrid(xAxis, yAxis) {
             addBoxEvents(box);
             columnContainer.appendChild(box);
         }
-        container.appendChild(columnContainer);
+        canvas.appendChild(columnContainer);
     }
     gridSize = xAxis;
 }
@@ -71,7 +72,7 @@ function toggleGridLines() {
 }
 
 function drawGridLines() {
-    let gridContainer = document.querySelector("#container");
+    let gridContainer = document.querySelector("#canvas");
     let gridContainerArray = [...gridContainer.children];
     let columnPosition = 1;
     gridContainerArray.forEach(column => {
@@ -100,7 +101,7 @@ function drawGridLines() {
 }
 
 function eraseGridLines() {
-    let gridContainer = document.querySelector("#container");
+    let gridContainer = document.querySelector("#canvas");
     let gridContainerArray = [...gridContainer.children];
     gridContainerArray.forEach(column => {
         let columnArray = [...column.children];
@@ -108,6 +109,16 @@ function eraseGridLines() {
             box.style.boxShadow = "";
         });
     });
+}
+
+function setCanvasSize() {
+    let newSize = prompt("New height and width of canvas (max 1024):");
+    if (newSize > 0 && newSize <= 1024) {
+        canvasLength = newSize;
+        createNewGrid(gridSize, gridSize);
+    } else {
+      console.error("Invalid Input: Expected a number > 0 and <= 1024");
+    }
 }
 
 function shader(boxStyles) {
@@ -204,6 +215,9 @@ function isValidGridSize(xAxis, yAxis) {
 let setGridSizeButton = document.querySelector("#setGridSizeButton");
 setGridSizeButton.addEventListener("click", createNewGrid);
 
+let setCanvasSizeButton = document.querySelector("#setCanvasSize");
+setCanvasSizeButton.addEventListener("click", setCanvasSize);
+
 let toggleGridLinesButton = document.querySelector("#toggleGridLinesButton");
 toggleGridLinesButton.addEventListener("click", toggleGridLines)
 
@@ -250,7 +264,7 @@ function randomIntFromInterval(min, max) { // min and max included
 // init
 
 function initialize() {
-    createGrid(DEFAULT_GRID_SIZE, DEFAULT_GRID_SIZE);
+    createGrid(gridSize, gridSize);
 }
 
 initialize();
@@ -259,3 +273,5 @@ initialize();
 // Allow change of canvas default background
 // Color picker pen style
 // make page more presentable/stylish
+// maybe:
+// don't allow redraw of box with rainbow if it's already been drawn with rainbow

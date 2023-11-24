@@ -5,13 +5,11 @@ body {
     background-color: #9e9e9e;
 }
 
-#container {
+#canvas {
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    width: 256px;
-    height: 256px;
 
 }
 
