@@ -1,6 +1,8 @@
 const DEFAULT_CANVAS_COLOR = "#ffffff";
-const DEFAULT_GRID_SIZE = 16;
 const DEFAULT_CANVAS_SIZE = 512;
+const MIN_CANVAS_SIZE = 64;
+const MAX_CANVAS_SIZE = 1024;
+const DEFAULT_GRID_SIZE = 16;
 const MIN_GRID_SIZE = 0;
 const MAX_GRID_SIZE = 64;
 
@@ -112,12 +114,12 @@ function eraseGridLines() {
 }
 
 function setCanvasSize() {
-    let newSize = prompt("New height and width of canvas (max 1024):");
-    if (newSize > 0 && newSize <= 1024) {
+    let newSize = prompt("New height and width of canvas (min: 64, max 1024):");
+    if (newSize >= MIN_CANVAS_SIZE && newSize <= MAX_CANVAS_SIZE) {
         canvasLength = newSize;
-        createNewGrid(gridSize, gridSize);
+        createGrid(gridSize, gridSize);
     } else {
-      console.error("Invalid Input: Expected a number > 0 and <= 1024");
+      console.error(`Invalid Input: Expected a number >= 64 and <= 1024 but was: ${newSize}`);
     }
 }
 
@@ -143,6 +145,10 @@ function shader(boxStyles) {
     } else if (boxStyles.backgroundColor === "rgb(26, 26, 26)") {
         boxStyles.backgroundColor = "rgb(0, 0, 0)";
     } 
+    // // allow overwriting of other colors with shader
+    // else if (boxStyles.backgroundColor !== "rgb(0, 0, 0)") {
+    //     boxStyles.backgroundColor = "rgb(230, 230, 230)";
+    // }
 
     return boxStyles;
 }
@@ -187,8 +193,8 @@ function draw(boxStyles) {
     if (isRainbowMode) {
         color = rainbow(boxStyles);
     }
-    if(isColorMode) {
-
+    if (isColorMode) {
+        
     }
     if (isEraserMode) {
         color = canvasColor;
@@ -273,5 +279,6 @@ initialize();
 // Allow change of canvas default background
 // Color picker pen style
 // make page more presentable/stylish
+// create general validation function to handle error message presentation
 // maybe:
 // don't allow redraw of box with rainbow if it's already been drawn with rainbow

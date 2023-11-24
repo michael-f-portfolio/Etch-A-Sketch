@@ -1,8 +1,17 @@
+* {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #9e9e9e;
+    gap: 8px;
+}
+
+#title {
+    font-size: 64px;
 }
 
 #canvas {
@@ -10,7 +19,6 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-
 }
 
 #settings {
@@ -18,7 +26,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-bottom: 16px;
+    padding-bottom: 8px;
+    gap: 8px;
 }
 
 #create-grid {
@@ -28,7 +37,7 @@ body {
 }
 
 #x-axis-input, #y-axis-input {
-    max-width: 48px;
+    max-width: 24px;
 }
 
 #warning-message {
@@ -36,12 +45,4 @@ body {
     color: red;
     font-weight: bold;
     padding-bottom: 8px;
-}
-
-.box {
-    background-color: #ffffff;
-}
-
-.column {
-    box-sizing: border-box;
 }
