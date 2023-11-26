@@ -41,8 +41,8 @@ body {
 }
 
 #warning-message {
-    font-size: 32px;
+    font-size: 16px;
     color: red;
     font-weight: bold;
-    padding-bottom: 8px;
+    /* padding-bottom: 8px; */
 }

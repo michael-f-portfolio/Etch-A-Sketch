@@ -126,42 +126,42 @@ function setCanvasSize() {
     }
 }
 
-function shader(boxStyles) {
-    if (boxStyles.backgroundColor === "rgb(255, 255, 255)") {
-        boxStyles.backgroundColor = "rgb(230, 230, 230)";
-    } else if (boxStyles.backgroundColor === "rgb(230, 230, 230)") {
-        boxStyles.backgroundColor = "rgb(204, 204, 204)";
-    } else if (boxStyles.backgroundColor === "rgb(204, 204, 204)") {
-        boxStyles.backgroundColor = "rgb(179, 179, 179)";
-    } else if (boxStyles.backgroundColor === "rgb(179, 179, 179)") {
-        boxStyles.backgroundColor = "rgb(153, 153, 153)";
-    } else if (boxStyles.backgroundColor === "rgb(153, 153, 153)") {
-        boxStyles.backgroundColor = "rgb(128, 128, 128)";
-    } else if (boxStyles.backgroundColor === "rgb(128, 128, 128)") {
-        boxStyles.backgroundColor = "rgb(102, 102, 102)";
-    } else if (boxStyles.backgroundColor === "rgb(102, 102, 102)") {
-        boxStyles.backgroundColor = "rgb(77, 77, 77)";
-    } else if (boxStyles.backgroundColor === "rgb(77, 77, 77)") {
-        boxStyles.backgroundColor = "rgb(51, 51, 51)";
-    } else if (boxStyles.backgroundColor === "rgb(51, 51, 51)") {
-        boxStyles.backgroundColor = "rgb(26, 26, 26)";
-    } else if (boxStyles.backgroundColor === "rgb(26, 26, 26)") {
-        boxStyles.backgroundColor = "rgb(0, 0, 0)";
-    } 
-    // // allow overwriting of other colors with shader
-    // else if (boxStyles.backgroundColor !== "rgb(0, 0, 0)") {
-    //     boxStyles.backgroundColor = "rgb(230, 230, 230)";
-    // }
+function shader(box) {
+    if (box.style.backgroundColor === "rgb(255, 255, 255)") {
+        box.style.backgroundColor = "rgb(230, 230, 230)";
+    } else if (box.style.backgroundColor === "rgb(230, 230, 230)") {
+        box.style.backgroundColor = "rgb(204, 204, 204)";
+    } else if (box.style.backgroundColor === "rgb(204, 204, 204)") {
+        box.style.backgroundColor = "rgb(179, 179, 179)";
+    } else if (box.style.backgroundColor === "rgb(179, 179, 179)") {
+        box.style.backgroundColor = "rgb(153, 153, 153)";
+    } else if (box.style.backgroundColor === "rgb(153, 153, 153)") {
+        box.style.backgroundColor = "rgb(128, 128, 128)";
+    } else if (box.style.backgroundColor === "rgb(128, 128, 128)") {
+        box.style.backgroundColor = "rgb(102, 102, 102)";
+    } else if (box.style.backgroundColor === "rgb(102, 102, 102)") {
+        box.style.backgroundColor = "rgb(77, 77, 77)";
+    } else if (box.style.backgroundColor === "rgb(77, 77, 77)") {
+        box.style.backgroundColor = "rgb(51, 51, 51)";
+    } else if (box.style.backgroundColor === "rgb(51, 51, 51)") {
+        box.style.backgroundColor = "rgb(26, 26, 26)";
+    } else if (box.style.backgroundColor === "rgb(26, 26, 26)") {
+        box.style.backgroundColor = "rgb(0, 0, 0)";
+    }
 
-    return boxStyles;
+    return box;
 }
 
-function rainbow(boxStyles) {
-    let red = randomIntFromInterval(0, 255);
-    let green = randomIntFromInterval(0, 255);
-    let blue = randomIntFromInterval(0, 255);
-    boxStyles.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-    return boxStyles;
+function rainbow(box) {
+    if (!box.classList.contains("marker")) {
+        let red = randomIntFromInterval(0, 255);
+        let green = randomIntFromInterval(0, 255);
+        let blue = randomIntFromInterval(0, 255);
+        box.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        box.classList.add("marker");
+    }
+    
+    return box;
 }
 
 function changePenStyle() {
@@ -188,13 +188,13 @@ function changePenStyle() {
     }
 }
 
-function draw(boxStyles) {
-    let color = boxStyles;
+function draw(box) {
+    let color = box;
     if (isShaderMode) {
-        color = shader(boxStyles);
+        color = shader(box);
     }
     if (isRainbowMode) {
-        color = rainbow(boxStyles);
+        color = rainbow(box);
     }
     if (isColorMode) {
         
@@ -246,11 +246,11 @@ xAxisInput.addEventListener("input", function(e) {
 function addBoxEvents(box) {
     box.addEventListener("mousedown", function(e) {
         onMouseDown = true;
-        box.style.backgroundColor = draw(box.style);
+        box.style.backgroundColor = draw(box);
     });
     box.addEventListener("mouseenter", function(e) {
         if(onMouseDown) {
-            box.style.backgroundColor = draw(box.style);
+            box.style.backgroundColor = draw(box);
         }
     });
     box.addEventListener("mouseup", function(e) {
